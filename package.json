@@ -1,0 +1,50 @@
+{
+  "name": "open-closest",
+  "displayName": "Open Closest",
+  "description": "Walk up the directory tree and open the closest matching file.",
+  "version": "0.1.0",
+  "publisher": "teoboutin",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/teoboutin/open-closest.git"
+  },
+  "categories": ["Other"],
+  "keywords": ["readme", "navigate", "ancestor", "directory", "open file"],
+  "engines": { "vscode": "^1.84.0" },
+  "main": "./out/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      { "command": "openClosest.open", "title": "Open Closest: Open (by filename argument)" },
+      { "command": "openClosest.pick", "title": "Open Closest: Pick…" }
+    ],
+    "configuration": {
+      "title": "Open Closest",
+      "properties": {
+        "openClosest.filenames": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["README.md", "CMakeLists.txt"],
+          "description": "Filenames offered by the 'Open Closest: Pick…' command."
+        },
+        "openClosest.stopAtWorkspaceRoot": {
+          "type": "boolean",
+          "default": true,
+          "description": "Stop the upward walk at the workspace folder containing the active file. When false, walk up to the filesystem root."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.84.0",
+    "@vscode/vsce": "^2.24.0",
+    "typescript": "^5.3.0"
+  }
+}
