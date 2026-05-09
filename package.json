@@ -2,7 +2,7 @@
   "name": "open-closest",
   "displayName": "Open Closest",
   "description": "Walk up the directory tree and open the closest matching file.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "teoboutin",
   "license": "BSD-3-Clause",
   "repository": {
