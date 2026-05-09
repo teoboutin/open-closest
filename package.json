@@ -17,7 +17,9 @@
   "contributes": {
     "commands": [
       { "command": "openClosest.open", "title": "Open Closest: Open (by filename argument)" },
-      { "command": "openClosest.pick", "title": "Open Closest: Pick…" }
+      { "command": "openClosest.pick", "title": "Open Closest: Pick…" },
+      { "command": "openClosest.openDescendant", "title": "Open Closest: Open Descendant (by filename argument)" },
+      { "command": "openClosest.pickDescendant", "title": "Open Closest: Pick Descendant…" }
     ],
     "configuration": {
       "title": "Open Closest",
@@ -26,7 +28,7 @@
           "type": "array",
           "items": { "type": "string" },
           "default": ["README.md", "CMakeLists.txt"],
-          "description": "Filenames offered by the 'Open Closest: Pick…' command."
+          "description": "Filenames offered by the 'Open Closest: Pick…' and 'Open Closest: Pick Descendant…' commands."
         },
         "openClosest.stopAtWorkspaceRoot": {
           "type": "boolean",
