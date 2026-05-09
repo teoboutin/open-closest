@@ -1,25 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import * as fs from 'fs';
-
-function findClosest(startDir: string, filename: string, stopAt: string | undefined): string | undefined {
-  let dir = path.resolve(startDir);
-  const fsRoot = path.parse(dir).root;
-  const stopAtNorm = stopAt ? path.resolve(stopAt) : undefined;
-
-  while (true) {
-    const candidate = path.join(dir, filename);
-    try {
-      if (fs.statSync(candidate).isFile()) return candidate;
-    } catch { /* not present, keep walking */ }
-
-    if (stopAtNorm && dir === stopAtNorm) return undefined;
-    if (dir === fsRoot) return undefined;
-    const parent = path.dirname(dir);
-    if (parent === dir) return undefined;
-    dir = parent;
-  }
-}
+import { findClosest } from './findClosest';
 
 async function openClosest(filename: string): Promise<void> {
   if (!filename) {
@@ -43,10 +24,16 @@ async function openClosest(filename: string): Promise<void> {
     ? vscode.workspace.getWorkspaceFolder(vscode.Uri.file(startDir))?.uri.fsPath
     : undefined;
 
-  const found = findClosest(startDir, filename, stopAt);
+  const excludePath = editor ? path.resolve(editor.document.uri.fsPath) : undefined;
+  const wasOnMatch = excludePath !== undefined && path.basename(excludePath) === filename;
+
+  const found = findClosest(startDir, filename, stopAt, excludePath);
   if (!found) {
     const where = stopAt ? `between ${startDir} and workspace root` : `walking up from ${startDir}`;
-    vscode.window.showInformationMessage(`Open Closest: no ${filename} found ${where}.`);
+    const msg = wasOnMatch
+      ? `Open Closest: no other ${filename} found above ${startDir}.`
+      : `Open Closest: no ${filename} found ${where}.`;
+    vscode.window.showInformationMessage(msg);
     return;
   }
 
